@@ -9,6 +9,7 @@ namespace PlayerCore
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private LayerMask _floorLayer;
+        [SerializeField] private LayerMask _enemyLayer;
         [SerializeField] private PlayerModel _model;
         
         private SurfaceFinder _surfaceFinder;
@@ -29,10 +30,12 @@ namespace PlayerCore
 
         private void OnClick(InputAction.CallbackContext context)
         {
-            if (!_surfaceFinder.TryGetNavMeshPosition(Pointer.current.position.ReadValue(), _floorLayer, out var position)) 
-                return;
+            if(_surfaceFinder.TryGetEnemy(Pointer.current.position.ReadValue(), _enemyLayer, out var enemy))
+                if (_model.TryAttackEnemy(enemy))
+                    return;
             
-            _model.SetDestination(position);
+            if (_surfaceFinder.TryGetNavMeshPosition(Pointer.current.position.ReadValue(), _floorLayer, out var position))
+                _model.SetDestination(position);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using EnemyCore;
+using UnityEngine;
 
 namespace PlayerCore
 {
@@ -22,6 +23,23 @@ namespace PlayerCore
             }
             
             worldPosition = Vector3.zero;
+            return false;
+        }
+
+        public bool TryGetEnemy(Vector2 screenPosition, LayerMask layer, out EnemyModel enemyModel)
+        {
+            var ray = _camera.ScreenPointToRay(screenPosition);
+
+            foreach (var raycastHit in Physics.RaycastAll(ray, Mathf.Infinity, layer))
+            {
+                var enemy = raycastHit.collider.GetComponent<EnemyModel>();
+                if (!enemy || !enemy.Attackable) continue;
+
+                enemyModel = enemy;
+                return true;
+            }
+
+            enemyModel = null;
             return false;
         }
     }
