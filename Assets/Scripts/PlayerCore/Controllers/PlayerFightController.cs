@@ -17,11 +17,14 @@ namespace PlayerCore
         private void KilledEnemy(EnemyModel enemy)
         {
             enemy.Die();
+            
+            _model.LevelUp(enemy.Level);
+            _model.PickUpWeapon(enemy.RewardWeaponId);
         }
 
         private void DiedFromEnemy(EnemyModel enemy)
         {
-            enemy.Kill();
+            enemy.KillPlayer();
         }
     }
 }

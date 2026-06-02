@@ -8,11 +8,13 @@ namespace EnemyCore
         public AttackType AttackType => _attackType;
         public bool HasSpecificAttackType => _hasSpecificAttackType;
         public int Level => _level;
+        public int RewardWeaponId => _rewardWeaponId;
         public bool Attackable => _attackable;
 
         [SerializeField] private AttackType _attackType;
         [SerializeField] private bool _hasSpecificAttackType;
         [SerializeField] private int _level;
+        [SerializeField] private int _rewardWeaponId;
         [SerializeField] private bool _attackable;
 
         public void Die()
@@ -20,7 +22,7 @@ namespace EnemyCore
             
         }
 
-        public void Kill()
+        public void KillPlayer()
         {
             
         }

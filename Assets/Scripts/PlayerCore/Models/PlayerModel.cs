@@ -17,6 +17,7 @@ namespace PlayerCore
 
         public event Action LeveledUp;
         public event Action ChangedWeapon;
+        public event Action StartedMovement;
         public event Action<EnemyModel> KilledEnemy;
         public event Action<EnemyModel> DiedFromEnemy;
 
@@ -26,12 +27,13 @@ namespace PlayerCore
         private void Awake()
         {
             _level = _startLevel;
-            _weapon = _weaponCollectionSystem.GetWeapon(_startLevel);
+            _weapon = _weaponCollectionSystem.GetWeapon(_startWeaponId);
         }
 
         public void SetDestination(Vector3 destination)
         {
             _agent.SetDestination(destination);
+            StartedMovement?.Invoke();
         }
 
         public bool TryAttackEnemy(EnemyModel enemy)
@@ -50,8 +52,7 @@ namespace PlayerCore
             
             if(lootable.Levels > 0) LevelUp(lootable.Levels);
             
-            var weapon = _weaponCollectionSystem.GetWeapon(lootable.WeaponId);
-            if(weapon != null) PickUpWeapon(weapon);
+            PickUpWeapon(lootable.WeaponId);
         }
 
         public void LevelUp(int levelAmount)
@@ -60,9 +61,12 @@ namespace PlayerCore
             LeveledUp?.Invoke();
         }
 
-        public void PickUpWeapon(Weapon weapon)
+        public void PickUpWeapon(int weaponId)
         {
-            _weapon = weapon; 
+            var weapon = _weaponCollectionSystem.GetWeapon(weaponId);
+            if (weapon == null) return;
+            
+            _weapon = weapon;
             ChangedWeapon?.Invoke();
         }
 
