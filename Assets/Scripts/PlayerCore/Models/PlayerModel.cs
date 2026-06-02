@@ -21,6 +21,8 @@ namespace PlayerCore
         public event Action<EnemyModel> KilledEnemy;
         public event Action<EnemyModel> DiedFromEnemy;
 
+        public int Level => _level;
+
         private int _level;
         private Weapon _weapon;
 

@@ -3,6 +3,7 @@ using System.Collections;
 using EnemyCore;
 using UnityEngine;
 using UnityEngine.AI;
+using WeaponsCore;
 
 namespace PlayerCore
 {
@@ -10,7 +11,9 @@ namespace PlayerCore
     {
         [SerializeField] private PlayerModel _model;
         [SerializeField] private NavMeshAgent _modelAgent;
+        [Space]
         [SerializeField] private PlayerAnimator _animator;
+        [SerializeField] private PlayerSkinView _skinView;
 
         private IEnumerator _movementTracker;
         
@@ -19,6 +22,13 @@ namespace PlayerCore
             _model.StartedMovement += StartMovement;
             _model.DiedFromEnemy += DiedFromEnemy;
             _model.KilledEnemy += KilledEnemy;
+            _model.ChangedWeapon += ChangedWeapon;
+        }
+
+        private void ChangedWeapon()
+        {
+            _skinView.SetWeapon(true);
+            _animator.EquipWeapon();
         }
 
         private void DiedFromEnemy(EnemyModel enemy)
